@@ -18,36 +18,42 @@ class MovieController extends Controller
     }
 
     public function store(Request $request)
-{
-    $validator = $request->validate([
-        'title' => 'required|string',
-        'description' => 'nullable|string',
-        'poster' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Added validation for poster
-    ]);
+    {
+        // Validate incoming request
+        $validatedData = $request->validate([
+            'title' => 'required|string',
+            'description' => 'nullable|string',
+            'poster' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Added validation for poster
+        ]);
 
-    // die($validator);
+        // Retrieve validated data
+        $title = $validatedData['title'];
+        $description = $validatedData['description'];
+        $poster = $request->file('poster');
 
-    // if ($validator->fails()) {
-    //     return response()->json([
-    //         "message" => "Validation failed",
-    //         "errors" => $validator->errors()
-    //     ], 422);
-    // }
+        // If poster is uploaded, generate filename and store it
+        if ($poster) {
+            $posterFileName = $title . "_" . time() . '.' . $poster->getClientOriginalExtension();
+            $poster->storeAs('posters', $posterFileName);
+        } else {
+            $posterFileName = null;
+        }
 
-    // Handle poster upload (same logic from previous version)
-    // if ($request->hasFile('poster')) {
-    //     // ... (poster upload logic)
-    // } else {
-    //     $movieData = $request->all();
-    // }
+        // Create a new Movie instance and assign properties
+        $movie = new Movie();
+        $movie->title = $title;
+        $movie->description = $description;
+        $movie->poster = $posterFileName;
 
-    $movie = Movie::create($movieData);
+        // Save the Movie instance to the database
+        $movie->save();
 
-    return response()->json([
-        "message" => "Movie created successfully",
-        "movie" => $movie,
-    ]);
-}
+        return response()->json([
+            "message" => "Movie created successfully",
+            "movie" => $movie,
+        ]);
+    }
+
 
 
 }
