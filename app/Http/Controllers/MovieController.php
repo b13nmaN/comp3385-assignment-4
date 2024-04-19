@@ -25,7 +25,7 @@ class MovieController extends Controller
         'poster' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Added validation for poster
     ]);
 
-    die($validator);
+    // die($validator);
 
     if ($validator->fails()) {
         return response()->json([

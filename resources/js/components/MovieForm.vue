@@ -12,7 +12,7 @@
             </div>
             <div class="form-group mb-3">
                 <label for="poster" class="form-label">Poster</label>
-                <input type="file" name="poster" @change="handleFileUpload" accept="image/*" class="form-control" />
+                <input type="file" name="poster"  accept="image/*" class="form-control" />
             </div>
             <button type="submit" class="btn btn-primary">Save Movie</button>
         </form>
@@ -35,13 +35,6 @@ export default {
       let movieForm = document.getElementById('movie-form');
       const formData = new FormData(movieForm);
 
-      if (this.movie.poster instanceof File) {
-        formData.append('poster', this.movie.poster);
-      }
-
-      const movieData = { ...this.movie, poster: undefined };
-      console.log("This is movieData: ", movieData);
-      formData.append('movie', movieData);
 
       
       console.log("This is formData: ", formData);
@@ -61,10 +54,7 @@ export default {
         console.error('Error:', error);
       });
     },
-    handleFileUpload(event) {
-      this.movie.poster = event.target.files[0];
-      console.log("This is this.movie: ", this.movie);
-    }
+
   }
 }
 </script>
