@@ -12,3 +12,4 @@ Route::get('/user', function (Request $request) {
 
 Route::get('movies', [MovieController::class, 'index']);
 Route::post('movies', [MovieController::class, 'store']);
+Route::delete('movies/{id}', [MovieController::class, 'destroy']);

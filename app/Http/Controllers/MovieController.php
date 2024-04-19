@@ -10,6 +10,7 @@ class MovieController extends Controller
     public function index()
     {
         $movies = Movie::all(); // Get all movies from the database
+        // dd($movies);
 
         return response()->json([
             "message" => "Movies retrieved successfully",
@@ -34,7 +35,7 @@ class MovieController extends Controller
         // If poster is uploaded, generate filename and store it
         if ($poster) {
             $posterFileName = $title . "_" . time() . '.' . $poster->getClientOriginalExtension();
-            $poster->storeAs('posters', $posterFileName);
+            $poster->storeAs('posters', $posterFileName, 'public'); 
         } else {
             $posterFileName = null;
         }

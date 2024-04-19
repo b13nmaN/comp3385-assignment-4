@@ -1,5 +1,8 @@
 <template>
     <div>
+      <div v-if="success" class="alert alert-success" role="alert">
+        {{ message }}
+      </div>
         <h1>Movie Form</h1>
         <form @submit.prevent="saveMovie" enctype="multipart/form-data" id="movie-form">
             <div class="form-group mb-3">
@@ -27,7 +30,9 @@ export default {
         title: '',
         description: '',
         poster: null, // Now this will be a File object
-      }
+      },
+      success: false,
+      message: '',
     };
   },
   methods: {
@@ -49,6 +54,8 @@ export default {
       .then(response => response.json())
       .then(data => {
         console.log(data); // Display a success message or handle the response
+        this.success = true;
+        this.message = data.message;
       })
       .catch(error => {
         console.error('Error:', error);
