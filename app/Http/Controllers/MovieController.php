@@ -27,19 +27,19 @@ class MovieController extends Controller
 
     // die($validator);
 
-    if ($validator->fails()) {
-        return response()->json([
-            "message" => "Validation failed",
-            "errors" => $validator->errors()
-        ], 422);
-    }
+    // if ($validator->fails()) {
+    //     return response()->json([
+    //         "message" => "Validation failed",
+    //         "errors" => $validator->errors()
+    //     ], 422);
+    // }
 
     // Handle poster upload (same logic from previous version)
-    if ($request->hasFile('poster')) {
-        // ... (poster upload logic)
-    } else {
-        $movieData = $request->all();
-    }
+    // if ($request->hasFile('poster')) {
+    //     // ... (poster upload logic)
+    // } else {
+    //     $movieData = $request->all();
+    // }
 
     $movie = Movie::create($movieData);
 
