@@ -1,5 +1,46 @@
 <script setup>
+import { defineProps } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+
+// Router instance
+const router = useRouter();
+
+
+
+// Define a prop to receive isLoggedIn status from parent component
+const props = defineProps({
+  isLoggedIn: Boolean
+});
+
+// Function to handle logout
+const logout = () => {
+    // Make AJAX request to logout endpoint
+    fetch('/api/v1/logout', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}` // Include JWT access token
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            localStorage.removeItem('token');
+            // Clear isLoggedIn status and update localStorage
+            props.isLoggedIn = false;
+            localStorage.setItem('isLoggedIn', false);
+            
+            // Redirect to login page
+            router.push('/login');
+        } else {
+            throw new Error('Logout failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle error (e.g., show error message to user)
+    });
+};
 </script>
 
 <template>
@@ -22,6 +63,13 @@
                     </li>
                     <li class="nav-item">
                         <RouterLink class="nav-link" :class="{ active: $route.path === '/movies'}" to="/movies">Movies</RouterLink>
+                    </li>
+                    <!-- Conditional rendering for login/logout links -->
+                    <li v-if="!isLoggedIn" class="nav-item">
+                        <RouterLink class="nav-link" :class="{ active: $route.path === '/login'}" to="/login">Login</RouterLink>
+                    </li>
+                    <li v-if="isLoggedIn" class="nav-item">
+                        <a class="nav-link" @click="logout" style="cursor: pointer;">Logout</a>
                     </li>
                 </ul>
             </div>

@@ -37,18 +37,15 @@ export default {
   },
   methods: {
     saveMovie() {
-      let movieForm = document.getElementById('movie-form');
-      const formData = new FormData(movieForm);
-
-
       
-      console.log("This is formData: ", formData);
+ 
       fetch("http://localhost/api/movies", {
         
         method: 'POST',
         body: formData,
         headers: {
           'accept': 'application/json',
+          'authorization': `Bearer ${localStorage.getItem('token')}`
         }
       })
       .then(response => response.json())

@@ -15,7 +15,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> 
   </template>
   
   <script setup>
@@ -28,17 +28,14 @@
       method: 'GET',
       headers: {
         'accept': 'application/json',
+        'authorization': `Bearer ${localStorage.getItem('token')}`
       }
     })
     .then(response => response.json())
     .then(data => {
       movies.value = data.movies;
-      console.log("This is movies: ", movies.value);
-      // for (let i = 0; i < movies.value.length; i++) {
-      //   console.log("This is title: ", movies.value[i].title);
-      //   console.log("This is description: ", movies.value[i].description);
-      //   console.log("This is poster: ", movies.value[i].poster);
-      // }
+      localStorage.setItem('isLoggedIn', true);
+
     })
     .catch(error => {
       console.error('Error:', error);
